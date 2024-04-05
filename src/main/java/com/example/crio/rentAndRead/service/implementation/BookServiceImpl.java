@@ -97,7 +97,7 @@ public class BookServiceImpl implements BookService {
             throw new BookNotFoundException("Book not found with id: " + rentBookRequest.getUserId());
         }
 
-        if(book.getAvailability_status() == false){
+        if(!book.getAvailability_status()){
             throw new BookUnavailableException("Book is not available");
         }
 

@@ -34,6 +34,7 @@ The Role must be defaulted to “User” if it is not specified
 Registered users must log in using their email address and password
 
 **Book Management**
+
 Store and manage book details
 
 Fields: Title, Author, Genre, Availability Status
@@ -45,6 +46,7 @@ Any user can browse all the available books
 Only the administrator is allowed to create, update, and delete books
 
 **Rental Management**
+
 Users must be able to rent books using the service
 
 A user cannot have more than two active rentals i.e. the service should throw an error if a user requests to rent a book while already having two other book rentals
