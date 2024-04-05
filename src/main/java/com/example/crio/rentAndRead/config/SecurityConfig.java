@@ -33,12 +33,12 @@ public class SecurityConfig{
         httpSecurity.authenticationProvider(authenticationProvider());
 
         httpSecurity.authorizeHttpRequests(configure -> configure
-                .requestMatchers("/login", "/register")
+                .requestMatchers("/users/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated());
 
-        // Explicitly tell Spring Security that we are using Basic Auth
+        // Using Basic Auth
         httpSecurity.httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
