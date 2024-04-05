@@ -1,8 +1,10 @@
 package com.example.crio.rentAndRead.controller;
 
 import com.example.crio.rentAndRead.dto.request.BookRequest;
+import com.example.crio.rentAndRead.dto.request.RentBookRequest;
 import com.example.crio.rentAndRead.entity.Book;
-import com.example.crio.rentAndRead.exception.BookNotFoundException;
+import com.example.crio.rentAndRead.entity.Rental;
+import com.example.crio.rentAndRead.exception.*;
 import com.example.crio.rentAndRead.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,6 +74,38 @@ public class BookController {
             msg = bookService.deleteBookById(bookId);
         }
         catch (BookNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return ResponseEntity.ok(msg);
+    }
+
+    // POST /books/{bookId}/rent
+    @PostMapping("/{bookId}/rent")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<String> createBook(@PathVariable Long bookId, @RequestBody RentBookRequest rentBookRequest) throws UserNotFoundException, BookRentedException, BookNotFoundException, BookUnavailableException {
+        rentBookRequest.setBookId(bookId);
+        String msg = "";
+        try{
+            msg = bookService.rentBook(rentBookRequest);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return ResponseEntity.ok(msg);
+    }
+
+
+    // POST /books/{bookId}/return
+    @PostMapping("/{bookId}/return")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<String> returnBook(@PathVariable Long bookId, @RequestBody RentBookRequest rentBookRequest) throws UserNotFoundException, BookNotFoundException, BookNotRentedException {
+        rentBookRequest.setBookId(bookId);
+
+        String msg = "";
+        try{
+            msg = bookService.returnBook(rentBookRequest);
+        }
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return ResponseEntity.ok(msg);
