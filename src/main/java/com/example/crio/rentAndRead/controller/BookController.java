@@ -7,6 +7,7 @@ import com.example.crio.rentAndRead.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,12 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+    // Admin can add, update, read, delete Books
+    // But User can only read book, User is not authorised to add, update, and delete.
+
     // POST /books
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Book createBook(@RequestBody Book book){
         return bookService.addBook(book);
     }
@@ -45,6 +50,7 @@ public class BookController {
 
     // PUT /books/{bookId}
     @PutMapping("/{bookId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> updateBook(@PathVariable("bookId") Long bookId, @RequestBody BookRequest bookRequest){
         Book book = null;
         try{
@@ -59,6 +65,7 @@ public class BookController {
 
     // DELETE /books/{bookId}
     @DeleteMapping("/{bookId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable Long bookId){
         String msg = "";
         try{
