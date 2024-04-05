@@ -82,7 +82,7 @@ public class BookController {
     // POST /books/{bookId}/rent
     @PostMapping("/{bookId}/rent")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<String> createBook(@PathVariable Long bookId, @RequestBody RentBookRequest rentBookRequest) throws UserNotFoundException, BookRentedException, BookNotFoundException, BookUnavailableException {
+    public ResponseEntity<String> rentBook(@PathVariable Long bookId, @RequestBody RentBookRequest rentBookRequest) throws UserNotFoundException, BookRentedException, BookNotFoundException, BookUnavailableException {
         rentBookRequest.setBookId(bookId);
         String msg = "";
         try{
